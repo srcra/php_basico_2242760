@@ -12,4 +12,21 @@ class Empleados extends Model
     protected $primaryKey="EmployeeId";
     //Omitir campos de auditoria
     public $timestamps = false;
+
+    //relacion 1 - M Cliente
+    public function clientes(){
+        return $this->hasMany('App\Cliente' , 'SupportRepId');
+    }
+
+    //relacion 1 - M Facturas (a través del cliente)
+    public function facturas(){
+        return $this->hasManyThrough('App\Factura',
+                                     'App\Cliente',
+                                     'SupportRepId',//FK del abuelo en el papá
+                                     'CustomerId',
+                                     'EmployeeId',
+                                     'CustomerId'
+                                    );
+    }
 }
+
